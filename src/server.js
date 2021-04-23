@@ -34,10 +34,7 @@ app.get("/api/users", (req, res, next) => {
       res.send(rows);
 
     }
-    // res.json({
-    //     "message":"success",
-    //     "data":rows
-    // })
+
   });
 });
 
@@ -50,10 +47,7 @@ app.get("/api/users/:id", (req, res, next) => {
       return;
     }
     res.send(row)
-    // res.json({
-    //     "message":"success",
-    //     "data":row
-    // })
+
   });
 });
 
@@ -107,9 +101,31 @@ app.post("/api/addtocart/", (req, res) => {
       res.json({
         "data": data,
 
+        "cart_id": this.lastID
+
       })
     }
   });
+});
+
+app.post("/api/removefromcart/", (req, res) => {
+  var data = {
+    cart_id: req.body.cart_id
+  }
+  var sql = 'DELETE FROM cart WHERE cart_id = ?'
+  var params = [data.cart_id]
+  db.run(sql, params, function (err, result) {
+    if (err) {
+      res.json({
+        "data": null
+      })
+      return;
+    } else {
+      res.json({
+        "data": 1
+      })
+    }
+  })
 });
 
 app.post("/api/cart/", function (req, res) {
@@ -173,20 +189,20 @@ app.post("/api/userLogin/", (req, res, next) => {
           res.json({
             "data": user,
             "message": "User Logged in",
-            
+
           });
         } else {
           res.json({
             "data": null,
             "message": "Incorrect Password",
-            
+
           });
         }
       } else {
         res.json({
           "data": null,
           "message": "Account Does Not Exists",
-          
+
         })
       }
     }
