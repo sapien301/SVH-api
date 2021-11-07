@@ -3,6 +3,7 @@ node_modules
 /dist
 .git
 public/images
+public/extras
 
 
 # local env files
